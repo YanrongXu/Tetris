@@ -1,7 +1,8 @@
 class Board {
     constructor(ctx) {
         this.ctx = ctx;
-        this.grid = this.getEmptyBoard()
+        this.grid = this.getEmptyBoard();
+        this.piece = new Piece(ctx);
     }
 
     getEmptyBoard() {
