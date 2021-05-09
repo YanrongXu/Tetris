@@ -40,4 +40,15 @@ const SHAPES = [
     [[0, 5, 5], [5, 5, 0], [0, 0, 0]],
     [[0, 6, 0], [6, 6, 6], [0, 0, 0]],
     [[7, 7, 0], [0, 7, 7], [0, 0, 0]]
-  ];
+];
+
+const POINTS = {  
+    SINGLE: 100,  
+    DOUBLE: 300,  
+    TRIPLE: 500,  
+    TETRIS: 800,  
+    SOFT_DROP: 1,  
+    HARD_DROP: 2  
+}
+
+Object.freeze(POINTS);

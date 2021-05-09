@@ -89,16 +89,32 @@ class Board {
     }
 
     clearLines() {
+        let lines = 0
+
         this.grid.forEach((row, y) => {
             // If every value is greater than zero then we have a full row
             if (row.every(value => value > 0)) {
                 // remove the row
+                lines++ // Increse for cleared line
                 this.grid.splice(y, 1)
                 
                 // Add zero filled row at the top
                 this.grid.unshift(Array(COLS).fill(0))
+
+                if (lines > 0) {
+                    // Add points if we cleared some lines
+                    account.score += this.getLineClearPoints(lines)
+                }
             }
         })
+    }
+
+    getLineClearPoints(lines) {    
+        return lines === 1 ? POINTS.SINGLE :  
+               lines === 2 ? POINTS.DOUBLE :    
+               lines === 3 ? POINTS.TRIPLE :       
+               lines === 4 ? POINTS.TETRIS :   
+               0;  
     }
 
 }

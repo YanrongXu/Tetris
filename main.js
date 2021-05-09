@@ -5,6 +5,26 @@ function play() {
 
 let requestId = null
 
+let accountValues = {
+    score: 0,
+    lines: 0
+}
+
+let account = new Proxy(accountValues, {
+    set: (target, key, value) => {
+        target[key] = value
+        updateAccount(key, value)
+        return true;
+    }
+})
+
+function updateAccount(key, value) {
+    let element = document.getElementById(key)
+    if (element) {
+        element.textContent = value
+    }
+}
+
 function play() {
     board = new Board(ctx)
     addEventListener();
@@ -84,12 +104,16 @@ function handleKeyPress(event) {
             // Hard Drop
             while (board.valid(p)) {
                 board.piece.move(p)
+                account.score += POINTS.HARD_DROP;
                 p = moves[KEY.SPACE](board.piece)
             }
         }
 
         if (board.valid(p)) {
             board.piece.move(p)
+            if (event.keyCode === KEY.DOWN) {
+                account.score += POINTS.SOFT_DROP;
+            }
         }
     }
 }
