@@ -3,12 +3,17 @@ const ctx = canvas.getContext('2d')
 const canvasNext = document.getElementById('next')
 const ctxNext = canvasNext.getContext('2d')
 
+// Calculate size of canvas from constants.
+ctx.canvas.width = COLS * BLOCK_SIZE;
+ctx.canvas.height = ROWS * BLOCK_SIZE;
 
-
-function play() {
-    board = new Board(ctx)
-    draw();
-}
+// Size canvas for four blocks.  
+ctxNext.canvas.width = 4 * BLOCK_SIZE;  
+ctxNext.canvas.height = 4 * BLOCK_SIZE;  
+ 
+// Scale blocks
+ctx.scale(BLOCK_SIZE, BLOCK_SIZE);
+ctxNext.scale(BLOCK_SIZE, BLOCK_SIZE);
 
 let requestId = null
 
@@ -37,12 +42,12 @@ function resetGame() {
     account.score = 0
     account.lines = 0
     account.level = 0
-    board = new Board(ctx)
+    board = new Board(ctx, ctxNext)
     time = {start: performance.now(), elapsed: 0, level: LEVEL[0]}
 }
 
 function play() {
-    board = new Board(ctx)
+    resetGame()
     addEventListener();
 
     // If we havae an old game running then cancel it
@@ -107,7 +112,7 @@ moves = {
     [KEY.SPACE]: (p) => ({...p, y: p.y + 1})
   };
 
-let board = new Board();
+let board = new Board(ctx, ctxNext);
 
 function handleKeyPress(event) {
     // Stop the event from bubbling

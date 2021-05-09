@@ -7,7 +7,7 @@ class Piece {
         this.color = COLORS[typeId]
 
         // Starting position
-        this.x = 3;
+        this.x = 0;
         this.y = 0;
     }
 

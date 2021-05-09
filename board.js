@@ -1,9 +1,12 @@
 class Board {
-    constructor(ctx) {
+    constructor(ctx, ctxNext) {
         this.ctx = ctx;
+        this.ctxNext = ctxNext
         this.grid = this.getEmptyBoard();
-        this.piece = new Piece(ctx);
+        this.setNextPiece()
+        this.setCurrentPiece()
     }
+    
 
     getEmptyBoard() {
         return Array.from(
@@ -62,9 +65,23 @@ class Board {
                 // Game Over
                 return false
             }
-            this.piece = new Piece(this.ctx)
+            this.setCurrentPiece()
         }
         return true
+    }
+
+    setNextPiece() {
+        const { width, height } = this.ctxNext.canvas;
+        this.nextPiece = new Piece(this.ctxNext);
+        this.ctxNext.clearRect(0, 0, width, height);
+        this.nextPiece.draw();
+    }
+
+    setCurrentPiece() {
+        this.piece = this.nextPiece
+        this.piece.ctx = this.ctx
+        this.piece.x = 3
+        this.setNextPiece()
     }
 
     freeze() {  
@@ -104,17 +121,33 @@ class Board {
                 if (lines > 0) {
                     // Add points if we cleared some lines
                     account.score += this.getLineClearPoints(lines)
+                    account.lines += lines
+
+                    // If we have reached the lines for the next level
+                    if (account.lines >= LINES_PER_LEVEL) {
+                        // Goto next level
+                        account.level ++
+
+                        // Remove lines so we start working for the next level
+                        account.lines -= LINES_PER_LEVEL;
+
+                        // Increase speed of the game
+                        time.level = LEVEL[account.level]
+                    }
+
                 }
             }
         })
     }
 
-    getLineClearPoints(lines) {    
-        return lines === 1 ? POINTS.SINGLE :  
-               lines === 2 ? POINTS.DOUBLE :    
-               lines === 3 ? POINTS.TRIPLE :       
-               lines === 4 ? POINTS.TETRIS :   
-               0;  
+    getLineClearPoints(lines) {
+        const lineClearPoint =     
+            lines === 1 ? POINTS.SINGLE :  
+            lines === 2 ? POINTS.DOUBLE :    
+            lines === 3 ? POINTS.TRIPLE :       
+            lines === 4 ? POINTS.TETRIS :   
+            0;
+        return (account.level + 1) * lineClearPoint;
     }
 
 }
