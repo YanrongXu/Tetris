@@ -11,3 +11,12 @@ ctx.canvas.height = ROWS * BLOCK_SIZE
 
 // Scale blocks
 ctx.scale(BLOCK_SIZE, BLOCK_SIZE)
+
+const KEY = {
+    LEFT: 37,
+    UP: 38,
+    RIGHT: 39,
+    DOWN: 40
+}
+
+Object.freeze(KEY);
