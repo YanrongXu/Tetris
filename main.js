@@ -1,3 +1,10 @@
+const canvas = document.getElementById('board')
+const ctx = canvas.getContext('2d')
+const canvasNext = document.getElementById('next')
+const ctxNext = canvasNext.getContext('2d')
+
+
+
 function play() {
     board = new Board(ctx)
     draw();
@@ -7,7 +14,8 @@ let requestId = null
 
 let accountValues = {
     score: 0,
-    lines: 0
+    lines: 0,
+    level: 0
 }
 
 let account = new Proxy(accountValues, {
@@ -23,6 +31,14 @@ function updateAccount(key, value) {
     if (element) {
         element.textContent = value
     }
+}
+
+function resetGame() {
+    account.score = 0
+    account.lines = 0
+    account.level = 0
+    board = new Board(ctx)
+    time = {start: performance.now(), elapsed: 0, level: LEVEL[0]}
 }
 
 function play() {
