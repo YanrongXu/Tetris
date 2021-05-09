@@ -4,9 +4,15 @@
 
 .grid {
     display: grid;
-    grid-template-columns: 320px 200px;
+    grid-template-columns: 300px 320px 200px;
 }
 
+.left-column {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+  
 .right-column {
     display: flex;
     flex-direction: column;

@@ -70,3 +70,6 @@ const LEVEL = {
     // 29+ is 20ms
 };
 Object.freeze(LEVEL)
+
+const NO_OF_HIGH_SCORES = 10;
+const HIGH_SCORES = "highScores";
