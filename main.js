@@ -3,12 +3,51 @@ function play() {
     draw();
 }
 
-
+let requestId = null
 
 function play() {
     board = new Board(ctx)
-    draw()
     addEventListener();
+
+    // If we havae an old game running then cancel it
+    if (requestId) {
+        cancelAnimationFrame(requestId);
+    }
+
+    time.start = performance.now()
+    animate()
+}
+
+function draw() {
+    const {width, height} = ctx.canvas;
+    ctx.clearRect(0, 0, width, height);
+
+    board.piece.draw();
+}
+
+let time = {start: 0, elapsed: 0, level: 1000}
+
+function animate(now = 0) {
+    // Update elapsed time.
+    time.elapsed = now - time.start;
+  
+    // If elapsed time has passed time for current level
+    if (time.elapsed > time.level) {
+      // Restart counting from now
+      time.start = now;
+  
+      drop();
+    }
+  
+    draw();
+    requestId = requestAnimationFrame(animate);
+  }
+
+function drop() {
+    let p = moves[KEY.DOWN](board.piece)
+    if (board.valid(p)) {
+        board.piece.move(p)
+    }
 }
 
 moves = {
@@ -41,13 +80,6 @@ function handleKeyPress(event) {
             draw()
         }
     }
-}
-
-function draw() {
-    const {width, height} = ctx.canvas;
-    ctx.clearRect(0, 0, width, height);
-
-    board.piece.draw();
 }
 
 function addEventListener() {
