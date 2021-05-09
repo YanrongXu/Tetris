@@ -15,7 +15,8 @@ moves = {
     [KEY.LEFT]: (p) => ({ ...p, x: p.x - 1 }),
     [KEY.RIGHT]: (p) => ({ ...p, x: p.x + 1 }),
     [KEY.DOWN]: (p) => ({ ...p, y: p.y + 1 }),
-    [KEY.UP]: (p) => board.rotate(p)
+    [KEY.UP]: (p) => board.rotate(p),
+    [KEY.SPACE]: (p) => ({...p, y: p.y + 1})
   };
 
 let board = new Board();
@@ -25,11 +26,20 @@ function handleKeyPress(event) {
     event.preventDefault()
 
     if (moves[event.keyCode]) {
+        // Get new state of piece
         let p = moves[event.keyCode](board.piece)
+        if (event.keyCode === KEY.SPACE) {
+            // Hard Drop
+            while (board.valid(p)) {
+                board.piece.move(p)
+                p = moves[KEY.SPACE](board.piece)
+            }
+        }
 
-        board.piece.move(p)
-
-        draw()
+        if (board.valid(p)) {
+            board.piece.move(p)
+            draw()
+        }
     }
 }
 
