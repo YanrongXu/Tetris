@@ -22,7 +22,8 @@ function draw() {
     const {width, height} = ctx.canvas;
     ctx.clearRect(0, 0, width, height);
 
-    board.piece.draw();
+    board.draw();
+    board.piece.draw()
 }
 
 let time = {start: 0, elapsed: 0, level: 1000}
@@ -36,7 +37,7 @@ function animate(now = 0) {
       // Restart counting from now
       time.start = now;
   
-      drop();
+      board.drop()
     }
   
     draw();
@@ -77,7 +78,6 @@ function handleKeyPress(event) {
 
         if (board.valid(p)) {
             board.piece.move(p)
-            draw()
         }
     }
 }
