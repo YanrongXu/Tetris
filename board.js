@@ -44,7 +44,7 @@ class Board {
             return value === 0 || (this.isInsideWalls(x, y) && this.isNotOccupied(x, y));
           });
         });
-    }
+      }
 
     isNotOccupied(x, y) {
         return this.grid[y] && this.grid[y][x] === 0;
@@ -57,8 +57,14 @@ class Board {
             this.piece.move(p)
         } else {
             this.freeze()
+            this.clearLines()
+            if (this.piece.y === 0) {
+                // Game Over
+                return false
+            }
             this.piece = new Piece(this.ctx)
         }
+        return true
     }
 
     freeze() {  
@@ -80,6 +86,19 @@ class Board {
             }  
           });  
         });  
+    }
+
+    clearLines() {
+        this.grid.forEach((row, y) => {
+            // If every value is greater than zero then we have a full row
+            if (row.every(value => value > 0)) {
+                // remove the row
+                this.grid.splice(y, 1)
+                
+                // Add zero filled row at the top
+                this.grid.unshift(Array(COLS).fill(0))
+            }
+        })
     }
 
 }
